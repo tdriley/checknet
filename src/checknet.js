@@ -17,7 +17,7 @@ var Checknet = Checknet || (function(){
 		var theUrl = sCheckUrl || window.location.href;
 		theUrl = getUrlWithCb(theUrl);
 
-		var xhr = new XMLHttpxhr();
+		var xhr = new XMLHttpRequest();
 		xhr.open('HEAD', theUrl, true);
 
 		xhr.onload = function() {
