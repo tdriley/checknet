@@ -2,6 +2,8 @@
 //TODO: implement accepting array of urls to test.
 //TODO: prevent red xhr error in console when no connection.
 //TODO: method on main object for setting settings.
+//TODO: add simpler methods of checking before polling starts.
+//TODO: add grunt build to minify & lint.
 
 var Checknet = Checknet || (function(){
 
