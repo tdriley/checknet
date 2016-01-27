@@ -1,0 +1,27 @@
+{
+  "name": "checknet",
+  "version": "0.0.1",
+  "description": "JavaScript for detecting internet connection.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tdriley/checknet.git"
+  },
+  "keywords": [
+    "javascript",
+    "js",
+    "detect",
+    "internet",
+    "net",
+    "connection"
+  ],
+  "author": "Tom Riley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tdriley/checknet/issues"
+  },
+  "homepage": "https://github.com/tdriley/checknet"
+}
