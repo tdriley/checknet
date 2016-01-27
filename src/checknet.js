@@ -1,7 +1,7 @@
-//dispatches custom javascript events: 'cnDropped' when connection drops, and 'cnRestored' when a previously dropped connection is restored.
 //TODO: pause polling when window/tab hidden/inactive.
 //TODO: implement accepting array of urls to test.
 //TODO: prevent red xhr error in console when no connection.
+//TODO: method on main object for setting settings.
 
 var Checknet = Checknet || (function(){
 
@@ -17,25 +17,25 @@ var Checknet = Checknet || (function(){
 		var theUrl = sCheckUrl || window.location.href;
 		theUrl = getUrlWithCb(theUrl);
 
-		var request = new XMLHttpRequest();
-		request.open('HEAD', theUrl, true);
+		var xhr = new XMLHttpxhr();
+		xhr.open('HEAD', theUrl, true);
 
-		request.onload = function() {
+		xhr.onload = function() {
 			handleCheckResult(true);
 			// var resultEvt;
-			// if (request.status >= 200 && request.status <=400) {
+			// if (xhr.status >= 200 && xhr.status <=400) {
 			// 	// success!
 			// } else {
 			// 	// reached our target server, but it returned an error
 			// }
 		};
 
-		request.onerror = function() {
+		xhr.onerror = function() {
 			// There was a connection error of some sort
 			handleCheckResult(false);
 		};
 
-		request.send();
+		xhr.send();
 
 		//check again after a timeout 
 		nTicker = setTimeout(function(){
@@ -44,7 +44,7 @@ var Checknet = Checknet || (function(){
 	},
 
 	_addEventListener = function(sName, fnHandler){
-		if(!sName) return false;
+		if(!sName || !fnHandler) return false;
 
 		Checknet['on'+sName] = fnHandler;
 	},
