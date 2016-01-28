@@ -84,15 +84,3 @@ var Checknet = Checknet || (function(){
 		getStatus: _getStatus
 	}
 }());
-
-Checknet.addEventListener('dropped', function(){
-	//what should happen when the connection drops.
-	console.log('dropped');
-});
-Checknet.addEventListener('restored', function(){
-	//what should happpen when a dropped connection resumes.
-	console.log('restored');
-});
-
-//set it going!
-Checknet.start();
