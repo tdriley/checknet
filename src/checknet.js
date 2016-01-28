@@ -1,22 +1,39 @@
 //TODO: pause polling when window/tab hidden/inactive.
-//TODO: implement accepting array of urls to test.
 //TODO: prevent red xhr error in console when no connection.
-//TODO: method on main object for setting settings.
-//TODO: add simpler methods of checking before polling starts.
-//TODO: add grunt build to minify & lint.
+//TODO: add simpler methods of checking network before polling starts. navigator.connection or whatver it is.
+//TODO: add grunt lint.
+//TODO: strict checking of incoming settings.
 
 var Checknet = Checknet || (function(){
 
 	var 
 	//internal settings
-	sCheckUrl = '', //enter a url you want to specify for checking. Server must allow CORS requests!
-	nCheckInt = 2000, //enter number of ms between each check poll (default 5sec).
-	bConActive = true, //is set to true/false to match current state of connection.
+	aCheckUrls = [window.location.href], //enter an array of urls you want to specify for checking. Any one of them being ok means connection is ok. These servers must allow CORS requests from your domain!
+	nCheckInt = 3000, //enter number of ms between each check poll (default 3sec).
+	bConActive = true, //is set to true/false to match current state of connection. True by default as page has just loaded!
 	nTicker,
 
+	_setSomething = function(sName, setting){
+		switch(sName){
+			case 'checkUrls':
+				if(typeof setting !== 'object') return false;
+				aCheckUrls = setting;
+				return true;
+			case 'checkInterval':
+				if(typeof setting !== 'number') return false;
+				if(setting < 1000) return false; //min 1000 (1 sec)
+				nCheckInt = setting;
+				return true;
+			default:
+				return false;
+		}
+	},
+
 	//_funcs to be exposed on namespace
-	_checkConnection = function (){
-		var theUrl = sCheckUrl || window.location.href;
+	_checkConnection = function (nUrlIndex){
+		nUrlIndex = nUrlIndex || 0;
+
+		var theUrl = aCheckUrls[nUrlIndex] || window.location.href;
 		theUrl = getUrlWithCb(theUrl);
 
 		var xhr = new XMLHttpRequest();
@@ -33,16 +50,17 @@ var Checknet = Checknet || (function(){
 		};
 
 		xhr.onerror = function() {
-			// There was a connection error of some sort
+			//if there's more urls to check, check next one now.
+			if(aCheckUrls.length-1 > nUrlIndex){
+				_checkConnection(nUrlIndex+1);
+				return;
+			}
+
+			// There was a connection error of some sort, and we've checked all urls available.
 			handleCheckResult(false);
 		};
 
 		xhr.send();
-
-		//check again after a timeout 
-		nTicker = setTimeout(function(){
-			_checkConnection();
-		}, nCheckInt);
 	},
 
 	_addEventListener = function(sName, fnHandler){
@@ -52,7 +70,11 @@ var Checknet = Checknet || (function(){
 	},
 
 	_getStatus = function(){
-		return bConActive;
+		return {
+			conActive: bConActive,
+			checkUrls: aCheckUrls,
+			checkInterval: nCheckInt
+		}
 	},
 
 	//internal funcs
@@ -63,6 +85,11 @@ var Checknet = Checknet || (function(){
 			Checknet.onrestored();
 		}
 		bConActive = bResult;
+
+		//check again after a timeout 
+		nTicker = setTimeout(function(){
+			_checkConnection();
+		}, nCheckInt);
 	},
 
 	getUrlWithCb = function(sUrl){
@@ -79,8 +106,9 @@ var Checknet = Checknet || (function(){
 
 	//return props & funcs to be exposed on namespace
 	return {
-		start: _checkConnection,
-		addEventListener: _addEventListener,
-		getStatus: _getStatus
+		start: 				_checkConnection,
+		addEventListener: 	_addEventListener,
+		getStatus: 			_getStatus,
+		set: 				_setSomething
 	}
 }());
