@@ -13,6 +13,7 @@ var Checknet = Checknet || (function(){
 	bConActive = true, //is set to true/false to match current state of connection. True by default as page has just loaded!
 	nTicker,
 
+	//_funcs to be exposed on namespace
 	_setSomething = function(sName, setting){
 		switch(sName){
 			case 'checkUrls':
@@ -29,7 +30,6 @@ var Checknet = Checknet || (function(){
 		}
 	},
 
-	//_funcs to be exposed on namespace
 	_checkConnection = function (nUrlIndex){
 		nUrlIndex = nUrlIndex || 0;
 
