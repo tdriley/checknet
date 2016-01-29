@@ -3,6 +3,7 @@
 //TODO: add grunt lint.
 //TODO: strict checking of incoming params.
 //TODO: make cachebuster more unique, and ensure it won't break any url (hashes etc)
+//TODO: remove protocol before check request set.
 
 var Checknet = (function(){
 
