@@ -1,5 +1,5 @@
 # Checknet
-Simple JavaScript library which periodically checks internet connection and calls functions of your choice when the connection is dropped or restored.
+Simple JavaScript library which periodically checks internet connection and calls functions of your choice when the connection is dropped or restored. I'm very interested in feature requests so if you have one, please open an issue here: https://github.com/tdriley/checknet/issues
 
 ### Setup
 Include the checknet.min.js (found in the src/ folder) on each page you want to be able to detect internet connection on:
