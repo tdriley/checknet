@@ -20,6 +20,31 @@ Checknet.addEventListener('restored', function(){
 	console.log('restored');
 });
 ```
+...and then set the check running by calling the start() method:
+```js
+Checknet.start();
+```
+Note: The page you are running the code on must be served from the internet (running it locally will not detect dropped internet connection).
+
+### Methods for further usage
+#### .set(name, value)
+Takes two required params 'name' (string) and value (mixed types):
+```js
+Checknet.set('checkUrls', ['http://asite.com', 'https://anothersite.co.uk']); //sets the array or URLs to check connection against.
+```
+Note: By default this contains only the current page URL. Any other servers you add must be able to accept CORS requests (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) from the domain you are running the code on. Adding a new array will overwrite the existing one. 
+
+#### .getStatus()
+Returns a JS object containing useful info:
+```js
+{
+	conActive: true, 											//true if connection is active on last check, false if not.
+	checkUrls: ['http://someurl.com', 'https:anotherurl.com'], 	//the current array of URLs which is being used to check there is a connection to.
+	checkInterval: 3000 										//the current interval in milliseconds between each check (default 3000).
+}
+```
+
+
 ### Building locally
 If you want to modify the files locally, clone or download the repo, navigate inside the 'checknet' folder and use npm to install:
 ```

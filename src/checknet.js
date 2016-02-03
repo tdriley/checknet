@@ -8,7 +8,7 @@ var Checknet = (function(){
 
 	var 
 	/* internal settings */
-	aCheckUrls 	= [window.location.href], 	 //array of urls to check against by default. Any one of them being ok means connection is ok. These servers must allow CORS requests from your domain, and handle !
+	aCheckUrls 	= [window.location.href], 	 //array of urls to check against by default. Any one of them being ok means connection is ok. These servers must allow CORS requests from your domain, and handle cachebsuters.
 	nCheckInt 	= 3000, 					 //enter number of ms between each check poll (default 3sec).
 	bConActive	= true, 					 //is set to true/false to match current state of connection. True by default as page has just loaded!
 	nTicker,
