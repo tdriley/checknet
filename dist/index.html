@@ -1,12 +1,17 @@
-<html>
-	<head>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
 		<script src="checknet.min.js"></script>
 	</head>
 	<body>
 		<h1>Checknet example page</h1>
 		<p>Serve this file from a webserver. Then break your connection to the server and look at the browser console. </p>
 		<script>
-			console.log('Checknet', Checknet);
+			//here's the namespace object, have a look at it.
+			console.log('Checknet looks like this: ', Checknet);
+
+			//add handlers for dropped & restored events
 			Checknet.addEventListener('dropped', function(){
 				//what should happen when the connection drops.
 				console.log('dropped');

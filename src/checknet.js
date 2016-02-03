@@ -1,30 +1,29 @@
 //TODO: prevent red xhr error in console when no connection.
-//TODO: add simpler methods of checking network before polling starts. navigator.connection or whatver it is (though this only checks for network, not internet).
 //TODO: add grunt lint.
 //TODO: strict checking of incoming params.
-//TODO: make cachebuster more unique, and ensure it won't break any url (hashes etc)
-//TODO: remove protocol before check request set.
+//TODO: make cachebuster more unique, and ensure it won't break any url (hashes etc).
+//TOOD: make http status code checking tighter.
 
 var Checknet = (function(){
 
 	var 
-	/* _internal settings */
-	_aCheckUrls = [window.location.href], //enter an array of urls you want to specify for checking. Any one of them being ok means connection is ok. These servers must allow CORS requests from your domain!
-	_nCheckInt = 3000, //enter number of ms between each check poll (default 3sec).
-	_bConActive = true, //is set to true/false to match current state of connection. True by default as page has just loaded!
-	_nTicker,
+	/* internal settings */
+	aCheckUrls 	= [window.location.href], 	 //array of urls to check against by default. Any one of them being ok means connection is ok. These servers must allow CORS requests from your domain, and handle !
+	nCheckInt 	= 3000, 					 //enter number of ms between each check poll (default 3sec).
+	bConActive	= true, 					 //is set to true/false to match current state of connection. True by default as page has just loaded!
+	nTicker,
 
 	/* _funcs to be exposed on namespace */
 	_setSomething = function(sName, setting){
 		switch(sName){
 			case 'checkUrls':
-				if(typeof setting !== 'object') return false;
-				_aCheckUrls = setting;
+				if(typeof setting !== 'object' || !setting.length) return false;
+				aCheckUrls = setting;
 				return true;
 			case 'checkInterval':
 				if(typeof setting !== 'number') return false;
 				if(setting < 1000) return false; //min 1000 (1 sec)
-				_nCheckInt = setting;
+				nCheckInt = setting;
 				return true;
 			default:
 				return false;
@@ -34,8 +33,8 @@ var Checknet = (function(){
 	_checkConnection = function (nUrlIndex){
 		nUrlIndex = nUrlIndex || 0;
 
-		var theUrl = _aCheckUrls[nUrlIndex] || window.location.href;
-		theUrl = getUrlWithCb(theUrl);
+		var theUrl = aCheckUrls[nUrlIndex] || window.location.href;
+		theUrl = getUrlReadyToUse(theUrl);
 
 		var xhr = new XMLHttpRequest();
 		xhr.open('HEAD', theUrl, true);
@@ -52,7 +51,7 @@ var Checknet = (function(){
 
 		xhr.onerror = function() {
 			//if there's more urls to check, check next one now.
-			if(_aCheckUrls.length-1 > nUrlIndex){
+			if(aCheckUrls.length-1 > nUrlIndex){
 				_checkConnection(nUrlIndex+1);
 				return;
 			}
@@ -72,9 +71,9 @@ var Checknet = (function(){
 
 	_getStatus = function(){
 		return {
-			conActive: _bConActive,
-			checkUrls: _aCheckUrls,
-			checkInterval: _nCheckInt
+			conActive: bConActive,
+			checkUrls: aCheckUrls,
+			checkInterval: nCheckInt
 		}
 	},
 
@@ -95,7 +94,7 @@ var Checknet = (function(){
 	onVisChange = function(){
 		if (document.hidden) {
 			// console.log('Vis changed, stopped checking.');
-			clearTimeout(_nTicker);
+			clearTimeout(nTicker);
 		}else{
 			// console.log('Vis changed, resumed checking.');
 			resetChecking();
@@ -103,30 +102,34 @@ var Checknet = (function(){
 	},
 
 	resetChecking = function(){
-		clearTimeout(_nTicker);
-		_nTicker = setTimeout(function(){
+		clearTimeout(nTicker);
+		nTicker = setTimeout(function(){
 			_checkConnection();
-		}, _nCheckInt);
+		}, nCheckInt);
 	},
 
 	handleCheckResult = function(bResult){
-		if(bResult===false && _bConActive){
+		if(bResult===false && bConActive){
 			_evtHandlers.dropped();
-		}else if(bResult===true && !_bConActive){
+		}else if(bResult===true && !bConActive){
 			_evtHandlers.restored();
 		}
-		_bConActive = bResult;
+		bConActive = bResult;
 		resetChecking();
 	},
 
-	getUrlWithCb = function(sUrl){
+	getUrlReadyToUse = function(sUrl){
+		//add a cachebuster
 		var sQueryString = /^[^#?]*(\?[^#]+|)/.exec(sUrl)[1],
 			sQsChar,
 			sUrlWithCb;
 
 		sQsChar = (sQueryString) ? '&' : '?';
+		sUrlWithCb = sUrl + sQsChar + '_=' + Math.round( Math.random()*100000000 );
 
-		sUrlWithCb = sUrl + sQsChar + new Date().getTime();
+		//make the url protocol-less
+		sUrlWithCb = sUrlWithCb.replace(/^https?:/, '');
+
 		return sUrlWithCb;
 	};
 
