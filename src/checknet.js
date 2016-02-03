@@ -122,15 +122,20 @@ var Checknet = (function(){
 		//add a cachebuster
 		var sQueryString = /^[^#?]*(\?[^#]+|)/.exec(sUrl)[1],
 			sQsChar,
-			sUrlWithCb;
+			sNewUrl;
 
 		sQsChar = (sQueryString) ? '&' : '?';
-		sUrlWithCb = sUrl + sQsChar + '_=' + Math.round( Math.random()*100000000 );
+		sNewUrl = sUrl + sQsChar + '_=' + Math.round( Math.random()*100000000 );
 
 		//make the url protocol-less
-		sUrlWithCb = sUrlWithCb.replace(/^https?:/, '');
+		sNewUrl = sNewUrl.replace(/^https?:/, '');
 
-		return sUrlWithCb;
+		//add slashes if they are not present
+		if( !sNewUrl.match(/^\/\//) ){
+			sNewUrl = '//' + sNewUrl;
+		}
+
+		return sNewUrl;
 	};
 
 	/* code to run straight away */

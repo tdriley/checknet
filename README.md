@@ -7,6 +7,7 @@ Include the checknet.min.js (found in the src/ folder) on each page you want to 
 <script src="checknet.min.js"></script>
 ```
 
+
 ### Usage
 Somewhere after including the script, add your event listeners for 'dropped' and 'restored' to the Checknet object, passing in a function you want to call in each case:
 ```js
@@ -26,13 +27,15 @@ Checknet.start();
 ```
 Note: The page you are running the code on must be served from the internet (running it locally will not detect dropped internet connection).
 
+
 ### Methods for further usage
 #### .set(name, value)
 Takes two required params 'name' (string) and value (mixed types):
 ```js
-Checknet.set('checkUrls', ['http://asite.com', 'https://anothersite.co.uk']); //sets the array or URLs to check connection against.
+Checknet.set('checkInterval', 5000); 											//sets the interval in milliseconds between each check (default 3000).
+Checknet.set('checkUrls', ['http://asite.com', 'https://anothersite.co.uk']); 	//sets the array or URLs to check connection with.
 ```
-Note: By default this contains only the current page URL. Any other servers you add must be able to accept CORS requests (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) from the domain you are running the code on. Adding a new array will overwrite the existing one. 
+Note on 'checkUrls': By default Checknet will use the current page URL. Any other servers you add must be able to accept CORS requests (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) from the domain you are running the code on. Adding a new array will overwrite the existing one. The array can contain only one URL if you wish.
 
 #### .getStatus()
 Returns a JS object containing useful info:
