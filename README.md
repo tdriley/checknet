@@ -1,4 +1,4 @@
-# checknet
+# Checknet
 Simple JavaScript library which periodically checks internet connection and calls functions of your choice when the connection is dropped or restored.
 
 ### Setup
@@ -32,7 +32,7 @@ Note: The page you are running the code on must be served from the internet (run
 #### .set(name, value)
 Takes two required params 'name' (string) and value (mixed types):
 ```js
-Checknet.set('checkInterval', 5000); 											//sets the interval in milliseconds between each check (default 3000).
+Checknet.set('checkInterval', 5000); 											//sets the interval in milliseconds between each check (default 3000, minimum 1000).
 Checknet.set('checkUrls', ['http://asite.com', 'https://anothersite.co.uk']); 	//sets the array or URLs to check connection with.
 ```
 Note on 'checkUrls': By default Checknet will use the current page URL. Any other servers you add must be able to accept CORS requests (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) from the domain you are running the code on. Adding a new array will overwrite the existing one. The array can contain only one URL if you wish.
