@@ -42,7 +42,7 @@ Returns a JS object containing useful info:
 ```js
 {
 	conActive: true, 											//true if connection is active on last check, false if not.
-	checkUrls: ['http://someurl.com', 'https:anotherurl.com'], 	//the current array of URLs which is being used to check there is a connection to.
+	checkUrls: ['http://someurl.com', 'https:anotherurl.com'], 	//the current array of URLs which is being used to check there is a connection.
 	checkInterval: 3000 										//the current interval in milliseconds between each check (default 3000).
 }
 ```
