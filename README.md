@@ -33,7 +33,7 @@ Note: The page you are running the code on must be served from the internet (run
 Takes two required params 'name' (string) and value (mixed types):
 ```js
 Checknet.set('checkInterval', 5000); 											//sets the interval in milliseconds between each check (default 3000, minimum 1000).
-Checknet.set('checkUrls', ['http://asite.com', 'https://anothersite.co.uk']); 	//sets the array or URLs to check connection with.
+Checknet.set('checkUrls', ['http://asite.com', 'https://anothersite.co.uk']); 	//sets the array of URLs to check connection with.
 ```
 Note on 'checkUrls': By default Checknet will use the current page URL. Any other servers you add must be able to accept CORS requests (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) from the domain you are running the code on. Adding a new array will overwrite the existing one. The array can contain only one URL if you wish.
 
@@ -49,7 +49,7 @@ Returns a JS object containing useful info:
 
 
 ### Building locally
-If you want to modify the files locally, clone or download the repo, navigate inside the 'checknet' folder and use npm to install:
+If you want to modify the src/ files locally, clone or download the repo, navigate inside the 'checknet' folder and use npm to install:
 ```
 sudo npm install
 ```
